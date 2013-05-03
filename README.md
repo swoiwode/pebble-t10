@@ -11,5 +11,5 @@ Credits/Inspiration:
 *  hudson for initial code.
 *  Jean-Noel MATTERN for converting hudson's code to the 'current' pebble SDK build process.
 
-github.com\swoiwode
+github.com/swoiwode
 05/02/2013
