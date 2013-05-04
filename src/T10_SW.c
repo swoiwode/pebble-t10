@@ -6,7 +6,7 @@
 // remove #if options.  Pulled out the custom date stuff, I am going to
 // use the center of the watch for day to week text and M/D below it.
 // Added second hand.
-// 05/03/2013 - Scott Woiwode - github\swoiwode
+// 05/03/2013 - Scott Woiwode - github/swoiwode
 
 #include "pebble_os.h"
 #include "pebble_app.h"
