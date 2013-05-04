@@ -5,6 +5,7 @@
 // v0.2 - Edit code to suit my tastes, improve comments (IMHO) and
 // remove #if options.  Pulled out the custom date stuff, I am going to
 // use the center of the watch for day to week text and M/D below it.
+// Added second hand.
 // 05/03/2013 - Scott Woiwode - github\swoiwode
 
 #include "pebble_os.h"
@@ -89,60 +90,60 @@ static GPoint minor_tick_points[] = {
 
 static void hand_layer_update( Layer * const me, GContext * ctx )
 {
-	( void ) me;
+    ( void ) me;
     
-  // Draw the hour hand outline in black and filled with white
-  int hour_angle = ( ( now.tm_hour * 60 + now.tm_min ) * TRIG_MAX_ANGLE ) / ( 60 * 24 );    
+    // Draw the hour hand outline in black and filled with white
+    int hour_angle = ( ( now.tm_hour * 60 + now.tm_min ) * TRIG_MAX_ANGLE ) / ( 60 * 24 );    
     
-  gpath_rotate_to(&hour_path, hour_angle);
-  graphics_context_set_fill_color(ctx, GColorWhite);
-  gpath_draw_filled(ctx, &hour_path);
-  graphics_context_set_stroke_color(ctx, GColorBlack);
-  gpath_draw_outline(ctx, &hour_path);
+    gpath_rotate_to(&hour_path, hour_angle);
+    graphics_context_set_fill_color(ctx, GColorWhite);
+    gpath_draw_filled(ctx, &hour_path);
+    graphics_context_set_stroke_color(ctx, GColorBlack);
+    gpath_draw_outline(ctx, &hour_path);
 
-  // Draw the minute hand outline in black and filled with white
-  int minute_angle = ( now.tm_min * TRIG_MAX_ANGLE ) / 60;
+    // Draw the minute hand outline in black and filled with white
+    int minute_angle = ( now.tm_min * TRIG_MAX_ANGLE ) / 60;
     
-  gpath_rotate_to(&minute_path, minute_angle);
-  graphics_context_set_fill_color(ctx, GColorWhite);
-  gpath_draw_filled(ctx, &minute_path);
-  graphics_context_set_stroke_color(ctx, GColorBlack);
-  gpath_draw_outline(ctx, &minute_path);
+    gpath_rotate_to(&minute_path, minute_angle);
+    graphics_context_set_fill_color(ctx, GColorWhite);
+    gpath_draw_filled(ctx, &minute_path);
+    graphics_context_set_stroke_color(ctx, GColorBlack);
+    gpath_draw_outline(ctx, &minute_path);
     
-  // Draw the second hand outline in black and filled with white
-  int second_angle = ( now.tm_sec * TRIG_MAX_ANGLE ) / 60;
+    // Draw the second hand outline in black and filled with white
+    int second_angle = ( now.tm_sec * TRIG_MAX_ANGLE ) / 60;
     
-  gpath_rotate_to( &second_path, second_angle );
-  graphics_context_set_fill_color( ctx, GColorWhite );
-  gpath_draw_filled( ctx, &second_path );
-  graphics_context_set_stroke_color( ctx, GColorBlack );
-  gpath_draw_outline(ctx, &second_path);
+    gpath_rotate_to( &second_path, second_angle );
+    graphics_context_set_fill_color( ctx, GColorWhite );
+    gpath_draw_filled( ctx, &second_path );
+    graphics_context_set_stroke_color( ctx, GColorBlack );
+    gpath_draw_outline(ctx, &second_path);
 
-  // Black circle over the hands.  Looks nice.
-  graphics_context_set_fill_color( ctx, GColorBlack );
-	graphics_fill_circle( ctx, GPoint( W / 2, H / 2 ), 30);
+    // Black circle over the hands.  Looks nice.
+    graphics_context_set_fill_color( ctx, GColorBlack );
+    graphics_fill_circle( ctx, GPoint( W / 2, H / 2 ), 30);
 
-	// Put some date info in the center space.
-  graphics_context_set_text_color( ctx, GColorWhite );
-	string_format_time( buffer, sizeof( buffer ), "%a", &now );
-  graphics_text_draw( ctx,
-                      buffer,
-                      font_date,
-                      GRect( W / 2 - 30, H / 2 - 30, 60, 24 ),
-                      GTextOverflowModeTrailingEllipsis,
-                      GTextAlignmentCenter,
-                      NULL
-                     );
+    // Put some date info in the center space.
+    graphics_context_set_text_color( ctx, GColorWhite );
+    string_format_time( buffer, sizeof( buffer ), "%a", &now );
+    graphics_text_draw( ctx,
+                        buffer,
+                        font_date,
+                        GRect( W / 2 - 30, H / 2 - 30, 60, 24 ),
+                        GTextOverflowModeTrailingEllipsis,
+                        GTextAlignmentCenter,
+                        NULL
+                       );
 
-	string_format_time( buffer, sizeof( buffer ), "%m/%d", &now );
-  graphics_text_draw( ctx,
-                      buffer,
-                      font_date,
-                      GRect( W / 2 - 30 , H / 2 - 8, 60, 24 ),
-                      GTextOverflowModeTrailingEllipsis,
-                      GTextAlignmentCenter,
-                      NULL
-                     );
+    string_format_time( buffer, sizeof( buffer ), "%m/%d", &now );
+    graphics_text_draw( ctx,
+                        buffer,
+                        font_date,
+                        GRect( W / 2 - 30 , H / 2 - 8, 60, 24 ),
+                        GTextOverflowModeTrailingEllipsis,
+                        GTextAlignmentCenter,
+                        NULL
+                       );
 }
 
 // Called once per second.
@@ -241,20 +242,20 @@ static void handle_init( AppContextRef ctx )
     GPATH_INIT( &second_path, second_points );
     gpath_move_to( &second_path, GPoint( W / 2, H / 2 ) );
     
-    GPATH_INIT(&major_tick_path, major_tick_points);
-    gpath_move_to(&major_tick_path, GPoint(W/2,H/2));
+    GPATH_INIT( &major_tick_path, major_tick_points );
+    gpath_move_to( &major_tick_path, GPoint( W / 2, H / 2 ) );
     
-    GPATH_INIT(&hour_tick_path, hour_tick_points);
-    gpath_move_to(&hour_tick_path, GPoint(W/2,H/2));
+    GPATH_INIT( &hour_tick_path, hour_tick_points );
+    gpath_move_to( &hour_tick_path, GPoint( W / 2, H / 2 ) );
     
-    GPATH_INIT(&minor_tick_path, minor_tick_points);
-    gpath_move_to(&minor_tick_path, GPoint(W/2,H/2));
+    GPATH_INIT( &minor_tick_path, minor_tick_points );
+    gpath_move_to( &minor_tick_path, GPoint( W / 2, H / 2 ) );
     
     get_time( &now );
     
-    window_init(&window, "Main");
-    window_stack_push(&window, true);
-    window_set_background_color(&window, GColorBlack);
+    window_init( &window, "Main" );
+    window_stack_push( &window, true );
+    window_set_background_color( &window, GColorBlack );
     
     resource_init_current_app( &RESOURCES );
     
@@ -292,6 +293,6 @@ void pbl_main( void * const params )
         },
     };
     
-    app_event_loop(params, &handlers);
+    app_event_loop( params, &handlers );
 }
 
